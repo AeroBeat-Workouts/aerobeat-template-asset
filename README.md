@@ -1,43 +1,82 @@
 # AeroBeat Internal Asset Template
 
-This is the official template for creating an **Internal Asset** repository within the AeroBeat ecosystem.
-
-**Internal Assets** contain system-critical content: UI Icons, Default Fonts, Mock Data, and Fallback Meshes. These are **NOT** for User Generated Content (UGC).
+System assets (UI, Fonts, Mock Data) for AeroBeat internal use.
 
 ## 📋 Repository Details
 
 *   **Type:** Internal Asset (System)
 *   **License:** **CC BY-NC 4.0** (Attribution-NonCommercial)
-*   **Constraints:**
-    *   **Internal Use Only:** These assets are required by the Assembly or UI Shells and are not swappable via the Modding API.
-    *   **Scripts Allowed:** Unlike UGC, internal asset repos **MAY** contain helper scripts (`.gd`) or shaders (`.gdshader`) for visual polish.
+*   **Dependencies:**
+    *   `aerobeat-core` (Required foundation for shared resource contracts)
 
-## 🚀 Getting Started
+## GodotEnv development flow
 
-1.  **Clone your new repo:**
-    ```bash
-    git clone https://github.com/YourOrg/aerobeat-asset-custom.git
-    ```
-2.  **Run Setup:**
-    Initialize the environment (Downloads Core contracts so you can edit Resources).
-    ```bash
-    python setup_dev.py
-    ```
-3.  **Add Content:**
-    Place your system files into the `assets/` directory.
-4.  **Import:**
-    This repository is intended to be used as a submodule or direct download into an `aerobeat-assembly-*` project.
+This repo uses the AeroBeat GodotEnv asset-package convention.
+
+- Canonical dev/test manifest: `.testbed/addons.jsonc`
+- Installed dev/test addons: `.testbed/addons/`
+- GodotEnv cache: `.testbed/.addons/`
+- Hidden workbench project: `.testbed/project.godot`
+- Repo-local unit tests: `.testbed/tests/`
+
+The repo root remains the package/published boundary for downstream consumers. Day-to-day development, import checks, and validation happen from the hidden `.testbed/` workbench using the pinned OpenClaw toolchain: Godot `4.6.2 stable standard`.
+
+### Restore dev/test dependencies
+
+From the repo root:
+
+```bash
+cd .testbed
+godotenv addons install
+```
+
+That installs the pinned `aerobeat-core` foundation plus GUT into `.testbed/addons/`.
+
+### Open the workbench
+
+From the repo root:
+
+```bash
+godot --editor --path .testbed
+```
+
+Use this `.testbed/` project as the canonical direct-development and import-validation surface for internal asset work.
+
+### Import smoke check
+
+From the repo root:
+
+```bash
+godot --headless --path .testbed --import
+```
+
+### Run unit tests
+
+From the repo root:
+
+```bash
+godot --headless --path .testbed --script addons/gut/gut_cmdln.gd \
+  -gdir=res://tests \
+  -ginclude_subdirs \
+  -gexit
+```
 
 ## 📂 Structure
 
-*   `assets/` - The root folder for all content.
-    *   `ui/` - Icons and Themes.
-    *   `fonts/` - TTF/OTF files.
-    *   `mock/` - JSON/Resource data for testing.
-    *   `prototypes/` - Greybox meshes.
-*   `LICENSE` - The CC BY-NC 4.0 legal text.
+*   `assets/` - Root folder for system-critical content.
+*   `assets/ui/` - Icons and themes.
+*   `assets/fonts/` - TTF/OTF files.
+*   `assets/mock/` - JSON/Resource data for testing.
+*   `assets/prototypes/` - Greybox meshes and fallback art.
 
-## 📝 Licensing & Commercial Use
+## Validation notes
 
-*   **Non-Commercial:** You are free to use, remix, and share these assets for non-commercial projects.
-*   **Commercial:** You **CANNOT** use these assets in a commercial product (sold on Steam, App Store, etc.) without replacing them or obtaining a specific license from the original creator.
+- `.testbed/addons.jsonc` is the committed dev/test dependency contract.
+- The manifest pins `aerobeat-core` to `v0.1.0` and GUT to `main`.
+- Repo-local unit tests live under `.testbed/tests/`.
+- This template is root-packaged (`subfolder: "/"`) and does not use a `.testbed/src` bridge; add real content directly under the repo root package boundary.
+
+## Notes
+
+- These assets are required by assemblies or UI shells and are not intended as mod-swappable UGC.
+- Helper scripts and shaders are allowed here when needed for system polish.
