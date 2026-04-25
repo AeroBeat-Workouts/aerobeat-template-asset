@@ -7,7 +7,7 @@ System assets (UI, Fonts, Mock Data) for AeroBeat internal use.
 *   **Type:** Internal Asset (System)
 *   **License:** **CC BY-NC 4.0** (Attribution-NonCommercial)
 *   **Dependencies:**
-    *   `aerobeat-core` (Required foundation for shared resource contracts)
+    *   `aerobeat-asset-core` (Canonical shared asset/resource contract)
 
 ## GodotEnv development flow
 
@@ -30,7 +30,7 @@ cd .testbed
 godotenv addons install
 ```
 
-That installs the pinned `aerobeat-core` foundation plus GUT into `.testbed/addons/`.
+That restores this repo's current dev/test manifest into `.testbed/addons/`. This repo is internal-only / system-facing Asset-lane work rather than a public workout-package template.
 
 ### Open the workbench
 
@@ -72,7 +72,7 @@ godot --headless --path .testbed --script addons/gut/gut_cmdln.gd \
 ## Validation notes
 
 - `.testbed/addons.jsonc` is the committed dev/test dependency contract.
-- The manifest pins `aerobeat-core` to `v0.1.0` and GUT to `main`.
+- The current manifest still pins the transition-era `aerobeat-core` package key to `v0.1.0` alongside GUT `main`. Canonical lane ownership is `aerobeat-asset-core`.
 - Repo-local unit tests live under `.testbed/tests/`.
 - This template is root-packaged (`subfolder: "/"`) and does not use a `.testbed/src` bridge; add real content directly under the repo root package boundary.
 
