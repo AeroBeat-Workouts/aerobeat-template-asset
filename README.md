@@ -1,13 +1,23 @@
 # AeroBeat Internal Asset Template
 
-System assets (UI, Fonts, Mock Data) for AeroBeat internal use.
+This is the official template for creating **internal asset** repositories within the current AeroBeat v1 architecture.
+
+It should be read against the locked product direction from `aerobeat-docs`:
+
+- **Primary release target:** PC community first
+- **Official v1 gameplay features:** Boxing and Flow
+- **Official v1 gameplay input:** camera only
+- **UI input stance:** mouse and touch remain valid for UI navigation, without implying equal-status gameplay input support
+- **Asset-lane ownership:** shared internal assets, UI presentation assets, environments, and future controlled avatar/cosmetics surfaces belong here through `aerobeat-asset-core`
+- **Downscoped customization truth:** this template is for internal/system asset work, not for reviving the older package-local gameplay asset swap story
 
 ## 📋 Repository Details
 
-*   **Type:** Internal Asset (System)
-*   **License:** **CC BY-NC 4.0** (Attribution-NonCommercial)
-*   **Dependencies:**
-    *   `aerobeat-asset-core` (Canonical shared asset/resource contract)
+- **Type:** Internal asset template
+- **License:** **CC BY-NC 4.0** (Attribution-NonCommercial)
+- **Dependency contract:**
+  - `aerobeat-asset-core` — required shared asset/resource contract for the asset lane
+  - additional adjacent lane/core repos only when a concrete internal asset repo truly consumes them
 
 ## GodotEnv development flow
 
@@ -30,7 +40,7 @@ cd .testbed
 godotenv addons install
 ```
 
-That restores this repo's current dev/test manifest into `.testbed/addons/`. This repo is internal-only / system-facing Asset-lane work rather than a public workout-package template.
+That restores this repo's current dev/test manifest into `.testbed/addons/`. Canonically, this template should keep the baseline manifest narrow: `aerobeat-asset-core` plus test-only tooling.
 
 ### Open the workbench
 
@@ -63,20 +73,22 @@ godot --headless --path .testbed --script addons/gut/gut_cmdln.gd \
 
 ## 📂 Structure
 
-*   `assets/` - Root folder for system-critical content.
-*   `assets/ui/` - Icons and themes.
-*   `assets/fonts/` - TTF/OTF files.
-*   `assets/mock/` - JSON/Resource data for testing.
-*   `assets/prototypes/` - Greybox meshes and fallback art.
+- `assets/` - Root folder for internal runtime content owned by this package.
+- `assets/ui/` - Icons, themes, and other shared UI-facing presentation assets.
+- `assets/fonts/` - TTF/OTF files.
+- `assets/mock/` - JSON/Resource data for testing and developer fixtures.
+- `assets/prototypes/` - Greybox meshes, fallback art, and exploratory internal assets.
 
 ## Validation notes
 
 - `.testbed/addons.jsonc` is the committed dev/test dependency contract.
-- The current manifest still pins the transition-era `aerobeat-core` package key to `v0.1.0` alongside GUT `main`. Canonical lane ownership is `aerobeat-asset-core`.
-- Repo-local unit tests live under `.testbed/tests/`.
+- The canonical template manifest for this repo is `aerobeat-asset-core` + `gut`.
+- Do **not** restore a universal `aerobeat-core` baseline here. Add adjacent repos only when a concrete asset repo truly needs them.
+- Repo-local unit tests live under `.testbed/tests/` and currently validate repo metadata plus the manifest contract.
 - This template is root-packaged (`subfolder: "/"`) and does not use a `.testbed/src` bridge; add real content directly under the repo root package boundary.
 
 ## Notes
 
-- These assets are required by assemblies or UI shells and are not intended as mod-swappable UGC.
+- These assets are intended for internal AeroBeat assemblies, shells, and shared product surfaces.
+- Environments remain in scope for the current product direction, but freeform package-local gameplay asset swap teaching does not.
 - Helper scripts and shaders are allowed here when needed for system polish.
